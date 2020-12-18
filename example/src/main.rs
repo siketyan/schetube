@@ -15,11 +15,13 @@ async fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let channel_id = arguments.get(1).unwrap();
-    let videos = fetch_upcoming_videos(channel_id).await?;
+    let (channel, videos) = fetch_upcoming_videos(channel_id).await?;
+
+    println!("{}: {}", channel.id, channel.name);
 
     for video in videos {
         println!(
-            "{}: {} ({})",
+            "\t- {}: {} ({})",
             video.id,
             video.title,
             video.scheduled_at.with_timezone(&Local)

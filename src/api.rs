@@ -1,6 +1,19 @@
 use serde::Deserialize;
 
+use crate::channel::Channel;
 use crate::video::Video;
+
+#[derive(Deserialize)]
+struct Thumbnail {
+    width: u32,
+    height: u32,
+    url: String,
+}
+
+#[derive(Deserialize)]
+struct ThumbnailCollection {
+    thumbnails: Vec<Thumbnail>,
+}
 
 #[derive(Deserialize)]
 struct Run {
@@ -23,6 +36,7 @@ struct UpcomingEventData {
 struct GridVideoRenderer {
     video_id: String,
     title: Title,
+    thumbnail: ThumbnailCollection,
     upcoming_event_data: UpcomingEventData,
 }
 
@@ -88,8 +102,31 @@ struct Contents {
 }
 
 #[derive(Deserialize)]
+struct Avatar {
+    thumbnails: Vec<Thumbnail>,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct ChannelMetadataRenderer {
+    title: String,
+    avatar: Avatar,
+    description: String,
+    keywords: String,
+    channel_url: String,
+    external_id: String,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct Metadata {
+    channel_metadata_renderer: ChannelMetadataRenderer,
+}
+
+#[derive(Deserialize)]
 struct Response {
     contents: Contents,
+    metadata: Metadata,
 }
 
 #[derive(Deserialize)]
@@ -99,7 +136,7 @@ pub(crate) struct Entry {
 
 pub(crate) type ApiResponse = Vec<Entry>;
 
-pub(crate) fn response_to_videos(response: ApiResponse) -> Option<Vec<Video>> {
+pub(crate) fn response_to_videos(response: &ApiResponse) -> Option<Vec<Video>> {
     response
         .last()?
         .response
@@ -125,6 +162,13 @@ pub(crate) fn response_to_videos(response: ApiResponse) -> Option<Vec<Video>> {
             Some(Video::new(
                 &item.grid_video_renderer.video_id,
                 &item.grid_video_renderer.title.runs.first().unwrap().text,
+                &item
+                    .grid_video_renderer
+                    .thumbnail
+                    .thumbnails
+                    .iter()
+                    .max_by_key(|&t| t.width * t.height)?
+                    .url,
                 item.grid_video_renderer
                     .upcoming_event_data
                     .start_time
@@ -133,4 +177,22 @@ pub(crate) fn response_to_videos(response: ApiResponse) -> Option<Vec<Video>> {
             ))
         })
         .collect::<Option<Vec<_>>>()
+}
+
+pub(crate) fn response_to_channel(response: &ApiResponse) -> Option<Channel> {
+    let metadata = &response
+        .last()?
+        .response
+        .as_ref()?
+        .metadata
+        .channel_metadata_renderer;
+
+    Some(Channel::new(
+        &metadata.external_id,
+        &metadata.title,
+        &metadata.description,
+        &metadata.channel_url,
+        &metadata.avatar.thumbnails.first()?.url,
+        metadata.keywords.split(" ").collect(),
+    ))
 }
