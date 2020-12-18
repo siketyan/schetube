@@ -1,7 +1,9 @@
+use chrono::{DateTime, Utc, TimeZone};
+
 pub struct Video {
     pub id: String,
     pub title: String,
-    pub scheduled_at: u64,
+    pub scheduled_at: DateTime<Utc>,
 }
 
 impl Video {
@@ -9,7 +11,7 @@ impl Video {
         Self {
             id: String::from(id),
             title: String::from(title),
-            scheduled_at,
+            scheduled_at: Utc.timestamp(scheduled_at as i64, 0),
         }
     }
 }
