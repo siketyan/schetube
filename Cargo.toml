@@ -1,6 +1,14 @@
 [package]
 name = "schetube"
+description = "A library to fetch upcoming live streams from a YouTube channel."
 version = "0.1.0"
+license = "MIT"
+license-file = "LICENCE.md"
+readme = "README.md"
+homepage = "https://github.com/siketyan/schetube"
+repository = "https://github.com/siketyan/schetube.git"
+documentation = "https://github.com/siketyan/schetube/#readme"
+keywords = ["rust-library", "youtube", "live-streams"]
 authors = ["Naoki Ikeguchi <root@siketyan.dev>"]
 edition = "2018"
 
