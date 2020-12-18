@@ -11,6 +11,11 @@ struct Thumbnail {
 }
 
 #[derive(Deserialize)]
+struct ThumbnailCollection {
+    thumbnails: Vec<Thumbnail>,
+}
+
+#[derive(Deserialize)]
 struct Run {
     text: String,
 }
@@ -31,6 +36,7 @@ struct UpcomingEventData {
 struct GridVideoRenderer {
     video_id: String,
     title: Title,
+    thumbnail: ThumbnailCollection,
     upcoming_event_data: UpcomingEventData,
 }
 
@@ -156,6 +162,13 @@ pub(crate) fn response_to_videos(response: &ApiResponse) -> Option<Vec<Video>> {
             Some(Video::new(
                 &item.grid_video_renderer.video_id,
                 &item.grid_video_renderer.title.runs.first().unwrap().text,
+                &item
+                    .grid_video_renderer
+                    .thumbnail
+                    .thumbnails
+                    .iter()
+                    .max_by_key(|&t| t.width * t.height)?
+                    .url,
                 item.grid_video_renderer
                     .upcoming_event_data
                     .start_time
