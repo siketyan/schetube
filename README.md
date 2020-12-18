@@ -1,15 +1,19 @@
 # schetube
-A CLI tool to fetch upcoming live streams from a YouTube channel.
+A library to fetch upcoming live streams from a YouTube channel.
 
-## Installation
-```
-$ git clone https://github.com/siketyan/schetube.git
-$ cd schetube
-$ cargo build --release
-$ ln -s "$(pwd)/target/release/schetube" /usr/local/bin/schetube
+## 📦 Installation
+```toml
+[dependencies]
+schetube = "0.1"
 ```
 
-## Usage
+## 💚 Example
 ```
-$ schetube [Channel ID]
+$ cd ./example
+$ cargo run [Channel ID]
+```
+
+## 🔌 API
+```rust
+pub async fn fetch_upcoming_videos(channel_id: &str) -> Result<Vec<Video>, Box<dyn Error>>;
 ```
