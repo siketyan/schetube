@@ -37,6 +37,7 @@ impl Client {
         Ok(Self::new(builder.build()?))
     }
 
+    #[allow(clippy::clone_double_ref)]
     pub async fn build() -> Result<Self, Box<dyn Error>> {
         let html = reqwest::get("https://www.youtube.com/")
             .await?

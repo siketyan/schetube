@@ -1,4 +1,6 @@
 # schetube
+![Rust](https://github.com/siketyan/schetube/workflows/Rust/badge.svg)
+
 A library to fetch upcoming live streams from a YouTube channel.
 
 ## 📦 Installation
