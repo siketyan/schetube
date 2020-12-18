@@ -2,6 +2,7 @@ mod api;
 mod client;
 mod video;
 
+use chrono::Local;
 use std::env::args;
 use std::error::Error;
 
@@ -25,7 +26,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
         response_to_videos(response).expect("Failed to determine videos from the response.");
 
     for video in videos {
-        println!("{}: {} ({})", video.id, video.title, video.scheduled_at);
+        println!(
+            "{}: {} ({})",
+            video.id,
+            video.title,
+            video.scheduled_at.with_timezone(&Local)
+        );
     }
 
     Ok(())
