@@ -1,17 +1,22 @@
 mod api;
+mod channel;
 mod client;
 mod video;
 
 use client::Client;
 use std::error::Error;
 
-use crate::api::response_to_videos;
+use crate::api::{response_to_channel, response_to_videos};
+use crate::channel::Channel;
 use crate::video::Video;
 
-pub async fn fetch_upcoming_videos(channel_id: &str) -> Result<Vec<Video>, Box<dyn Error>> {
+pub async fn fetch_upcoming_videos(
+    channel_id: &str,
+) -> Result<(Channel, Vec<Video>), Box<dyn Error>> {
     let client = Client::build().await?;
     let response = client.fetch_upcoming_live_streams(channel_id).await?;
-    let videos = response_to_videos(response).ok_or("Failed to transform the response.")?;
+    let channel = response_to_channel(&response).ok_or("Failed to transform the response.")?;
+    let videos = response_to_videos(&response).ok_or("Failed to transform the response.")?;
 
-    Ok(videos)
+    Ok((channel, videos))
 }
