@@ -1,13 +1,8 @@
-mod api;
-mod client;
-mod video;
-
 use chrono::Local;
 use std::env::args;
 use std::error::Error;
 
-use crate::api::response_to_videos;
-use crate::client::Client;
+use schetube::fetch_upcoming_videos;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -20,10 +15,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let channel_id = arguments.get(1).unwrap();
-    let client = Client::build().await?;
-    let response = client.fetch_upcoming_live_streams(channel_id).await?;
-    let videos =
-        response_to_videos(response).expect("Failed to determine videos from the response.");
+    let videos = fetch_upcoming_videos(channel_id).await?;
 
     for video in videos {
         println!(
