@@ -130,13 +130,13 @@ struct Response {
 }
 
 #[derive(Deserialize)]
-pub(crate) struct Entry {
+pub struct Entry {
     response: Option<Response>,
 }
 
-pub(crate) type ApiResponse = Vec<Entry>;
+pub type ApiResponse = Vec<Entry>;
 
-pub(crate) fn response_to_videos(response: &ApiResponse) -> Option<Vec<Video>> {
+pub fn response_to_videos(response: &ApiResponse) -> Option<Vec<Video>> {
     response
         .last()?
         .response
@@ -179,7 +179,7 @@ pub(crate) fn response_to_videos(response: &ApiResponse) -> Option<Vec<Video>> {
         .collect::<Option<Vec<_>>>()
 }
 
-pub(crate) fn response_to_channel(response: &ApiResponse) -> Option<Channel> {
+pub fn response_to_channel(response: &ApiResponse) -> Option<Channel> {
     let metadata = &response
         .last()?
         .response
