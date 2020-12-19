@@ -130,7 +130,7 @@ struct Response {
 }
 
 #[derive(Deserialize)]
-pub(crate) struct Entry {
+pub struct Entry {
     response: Option<Response>,
 }
 
