@@ -17,7 +17,7 @@ impl Display for ClientBuildError {
 
 impl Error for ClientBuildError {}
 
-pub(crate) struct Client {
+pub struct Client {
     client: reqwest::Client,
 }
 

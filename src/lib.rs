@@ -3,12 +3,12 @@ mod channel;
 mod client;
 mod video;
 
-use client::Client;
 use std::error::Error;
 
-use crate::api::{response_to_channel, response_to_videos};
-use crate::channel::Channel;
-use crate::video::Video;
+pub use crate::api::{response_to_channel, response_to_videos};
+pub use crate::channel::Channel;
+pub use crate::client::Client;
+pub use crate::video::Video;
 
 pub async fn fetch_upcoming_videos(
     channel_id: &str,
