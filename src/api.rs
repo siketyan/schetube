@@ -134,7 +134,7 @@ pub(crate) struct Entry {
     response: Option<Response>,
 }
 
-pub(crate) type ApiResponse = Vec<Entry>;
+pub type ApiResponse = Vec<Entry>;
 
 pub fn response_to_videos(response: &ApiResponse) -> Option<Vec<Video>> {
     response

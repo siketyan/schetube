@@ -5,7 +5,7 @@ mod video;
 
 use std::error::Error;
 
-pub use crate::api::{response_to_channel, response_to_videos};
+pub use crate::api::{response_to_channel, response_to_videos, ApiResponse};
 pub use crate::channel::Channel;
 pub use crate::client::Client;
 pub use crate::video::Video;
