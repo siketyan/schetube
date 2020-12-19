@@ -1,7 +1,7 @@
 [package]
 name = "schetube"
 description = "A library to fetch upcoming live streams from a YouTube channel."
-version = "0.1.1"
+version = "0.1.2"
 license = "MIT"
 license-file = "LICENCE.md"
 readme = "README.md"
